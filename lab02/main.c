@@ -7,7 +7,11 @@ sequence.b. Given a vector of numbers, find the longest contiguous subsequence
 such that all elements are in a given interval
 */
 
-
+/*
+Read a n by m integer matrix and return it's length.
+In: array or integer arrays to populate
+Out: the length of the array
+*/
 int     readMatrix(int matrix[][100]) {
     int currentNumber, rowIndex=0, colIndex=0;
 
@@ -27,6 +31,11 @@ int     readMatrix(int matrix[][100]) {
    return rowIndex;
 }
 
+/*
+Display a given n by m matrix on the screen.
+In: len,  array or integer arrays to print
+Out: nothing
+*/
 void     printMatrix(int len, int matrix[][100]) {
     int j=0;
 
@@ -40,6 +49,11 @@ void     printMatrix(int len, int matrix[][100]) {
     }
 }
 
+/*
+Display the maximum of each sequence and the maximum from all sequences.
+In: len the length of the matrix, matrix array or integer arrays to check
+Out: nothing
+*/
 void     printMax(int len, int matrix[][100]) {
     int rowMax, max=matrix[0][0], j=0;
 
@@ -70,7 +84,11 @@ void exa() {
     printMax(len, matrix);
 }
 
-
+/*
+Read a vector
+In: vectory in memory to read
+Out: length of the vector
+*/
 int     readVector(int vector[]) {
     int currentNumber, index=0;
 
@@ -83,6 +101,11 @@ int     readVector(int vector[]) {
     return index;
 }
 
+/*
+Find the longest subsequnce in between a given interval.
+In: len length of the vector, and vector array of integers
+Out: nothing
+*/
 void     longestSubSequence(int len, int vector[]) {
     int     intervalStart, intervalEnd;
     printf("Interval start: ");
