@@ -5,7 +5,11 @@ ends by 0, reading of all  thesequences ends  by -1)  and  determine  the
 maximum  element of  each  sequence  and  the maxim element of the global
 sequence.b. Given a vector of numbers, find the longest contiguous subsequence
 such that all elements are in a given interval
+
+    Lab activity - 4 - Read a sequence of natural numbers (sequence ended by 0)
+and determine the number of 0 digits of the product ofthe read numbers.
 */
+
 
 /*
 Read a n by m integer matrix and return it's length.
@@ -75,7 +79,7 @@ void     printMax(int len, int matrix[][100]) {
 
 void exa() {
     int     matrix[100][100];
-    int     len, j=0;
+    int     len;
 
     len = readMatrix(matrix);
     printf("\nMatrix:\n");
@@ -152,16 +156,40 @@ void     exb() {
 }
 
 
+void     lab2Activity() {
+    int n1, n2, product, count;
+
+    printf("\nInput the first number: ");
+    scanf("%d", &n1);
+    printf("\nInput the second number: ");
+    scanf("%d", &n2);
+
+    product = n1 * n2;
+
+    count = 0;
+    while (product > 0 && product % 10 == 0) {
+        count++;
+        product /= 10;
+    }
+
+    printf("\nThere are %d trailing 0s in the product of %d and %d (=%d)\n", count, n1, n2, n1 * n2);
+}
+
 int     main(void){
     char    option;
 
-    printf("Choose an option (a or b): ");
+    printf("Choose an option:\n");
+    printf("\ta - subpoint a\n");
+    printf("\tb - subpoint b\n");
+    printf("\tc - lab activity 2\n");
     scanf("%c", &option);
 
     if (option == 'a')
         exa();
     else if (option == 'b')
         exb();
+    else if (option == 'c')
+        lab2Activity();
     else
         printf("Invalid option!");
 
