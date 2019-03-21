@@ -6,13 +6,13 @@
 #include "domain.h"
 #include "utils.h"
 
-void    repositoryInitialSetup(stock **currentStock) {
-    *currentStock = malloc(sizeof(stock));
+void    repositoryInitialSetup(Stock **currentStock) {
+    *currentStock = malloc(sizeof(Stock));
     (*currentStock)->length = 0;
 }
 
 
-void    repositoryGetMedication(stock *currentStock, int index) {
+void    repositoryGetMedication(Stock *currentStock, int index) {
     printf("Medication at index %d:\n", index);
     printf("\tname - %s\n", currentStock->medications[index].name);
     printf("\tconcentration - %d\n", currentStock->medications[index].concentration);
@@ -22,7 +22,7 @@ void    repositoryGetMedication(stock *currentStock, int index) {
 }
 
 
-void    repositoryGetAllMedications(stock *currentStock) {
+void    repositoryGetAllMedications(Stock *currentStock) {
     printf("Printing all stock medication:\n");
 
     for (int i=0; i<currentStock->length; i++) {
@@ -36,7 +36,7 @@ void    repositoryGetAllMedications(stock *currentStock) {
 }
 
 
-void     repositoryAddMedication(stock *currentStock, char name[100], int concentration, int quantity, float price) {
+void     repositoryAddMedication(Stock *currentStock, char name[100], int concentration, int quantity, float price) {
     // Check if medication already exists
     int index = -1;
     for (int i=0; i<currentStock->length; i++)
@@ -47,7 +47,7 @@ void     repositoryAddMedication(stock *currentStock, char name[100], int concen
 
     if (index == -1) {
         printf("Adding new medication!\n");
-        medication     newMedication;
+        Medication     newMedication;
 
         strcpy(newMedication.name, name);
         newMedication.concentration = concentration;
@@ -63,7 +63,7 @@ void     repositoryAddMedication(stock *currentStock, char name[100], int concen
 }
 
 
-void     repositoryUpdateMedication(stock *currentStock, int index, char name[100], int concentration, int quantity, float price) {
+void     repositoryUpdateMedication(Stock *currentStock, int index, char name[100], int concentration, int quantity, float price) {
     strcpy(currentStock->medications[index].name, name);
     currentStock->medications[index].concentration = concentration;
     currentStock->medications[index].quantity = quantity;
@@ -71,7 +71,7 @@ void     repositoryUpdateMedication(stock *currentStock, int index, char name[10
 }
 
 
-void    repositoryDeleteMedication(stock *currentStock, int index) {
+void    repositoryDeleteMedication(Stock *currentStock, int index) {
     while (index < currentStock->length) {
         currentStock->medications[index] = currentStock->medications[index + 1];
         index++;
@@ -81,8 +81,8 @@ void    repositoryDeleteMedication(stock *currentStock, int index) {
 }
 
 
-void    repositorySearchMedications(stock *currentStock, char    subString[100]) {
-    medication     tmpMedication, medicationResults[100];
+void    repositorySearchMedications(Stock *currentStock, char    subString[100]) {
+    Medication     tmpMedication, medicationResults[100];
     int            index=0;
 
     // Find all medications from stock that match the substring
@@ -113,8 +113,8 @@ void    repositorySearchMedications(stock *currentStock, char    subString[100])
 }
 
 
-void    repositorySearchMedicationsSorted(stock *currentStock, char    subString[100]) {
-    medication     tmpMedication, medicationResults[100];
+void    repositorySearchMedicationsSorted(Stock *currentStock, char    subString[100]) {
+    Medication     tmpMedication, medicationResults[100];
     int            index=0;
 
     // Find all medications from stock that match the substring
@@ -131,6 +131,27 @@ void    repositorySearchMedicationsSorted(stock *currentStock, char    subString
                 medicationResults[j + 1] = tmpMedication;
             }
         }
+
+    // Display sorted medications
+    printf("\nResults:\n");
+    for (int i=0; i<index; i++) {
+        printf("\tmedication index - %d\n", i);
+        printf("\tname - %s\n", medicationResults[i].name);
+        printf("\tconcentration - %d\n", medicationResults[i].concentration);
+        printf("\tquantity - %d\n", medicationResults[i].quantity);
+        printf("\tprice - %f\n", medicationResults[i].price);
+        printf("\n");
+    }
+}
+
+void    repositoryGetMedicationByQuantity(Stock *currentStock, int quantity) {
+    Medication     medicationResults[100];
+    int            index=0;
+
+    // Find all medications from stock that have atleast the given quantity
+    for (int i=0; i < currentStock->length; i++)
+        if (currentStock->medications[i].quantity > quantity)
+            medicationResults[index++] = currentStock->medications[i];
 
     // Display sorted medications
     printf("\nResults:\n");

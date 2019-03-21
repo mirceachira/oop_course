@@ -1,32 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "console.h"
+#include "controller.h"
 #include "ui.h"
 #include "test.h"
 
 
-void initialSetup(ui **currentUi) {
-    *currentUi = malloc(sizeof(ui));
-    consoleInitialSetup(&((*currentUi)->currentConsole));
+void initialSetup(Ui **currentUi) {
+    *currentUi = malloc(sizeof(Ui));
+    controllerInitialSetup(&((*currentUi)->currentController));
 }
 
 
-void     getMedication(ui *currentUi) {
+void     getMedication(Ui *currentUi) {
     int     index;
 
     printf("Enter medication index: ");
     scanf("%d", &index);
 
-    consoleGetMedication(currentUi->currentConsole, index);
+    controllerGetMedication(currentUi->currentController, index);
 }
 
-void     getAllMedications(ui *currentUi) {
-    consoleGetAllMedications(currentUi->currentConsole);
+void     getAllMedications(Ui *currentUi) {
+    controllerGetAllMedications(currentUi->currentController);
 }
 
 
-void    addMedication(ui *currentUi) {
+void    addMedication(Ui *currentUi) {
     char     name[100];
     int      concentration;
     int      quantity;
@@ -42,11 +42,11 @@ void    addMedication(ui *currentUi) {
     printf("\tprice - ");
     scanf("%f", &price);
 
-    consoleAddMedication(currentUi->currentConsole, name, concentration, quantity, price);
+    controllerAddMedication(currentUi->currentController, name, concentration, quantity, price);
 }
 
 
-void    updateMedication(ui *currentUi) {
+void    updateMedication(Ui *currentUi) {
     char     name[100];
     int      index, concentration, quantity;
     float    price;
@@ -63,39 +63,51 @@ void    updateMedication(ui *currentUi) {
     printf("\tprice - ");
     scanf("%f", &price);
 
-    consoleUpdateMedication(currentUi->currentConsole, index, name, concentration, quantity, price);
+    controllerUpdateMedication(currentUi->currentController, index, name, concentration, quantity, price);
 }
 
 
-void     deleteMedication(ui *currentUi) {
+void     deleteMedication(Ui *currentUi) {
     int     index;
 
     printf("Enter medication index: ");
     scanf("%d", &index);
 
-    consoleDeleteMedication(currentUi->currentConsole, index);
+    controllerDeleteMedication(currentUi->currentController, index);
 }
 
 
-void     searchMedication(ui *currentUi) {
+void     searchMedication(Ui *currentUi) {
     char     subString[100];
 
     printf("Enter substring to search for: ");
     fgetc(stdin);
     fgets(subString, sizeof(subString), stdin);
     subString[strlen(subString) - 1] = '\0';
-    consoleSearchMedication(currentUi->currentConsole, subString);
+    controllerSearchMedication(currentUi->currentController, subString);
 }
 
-void     searchMedicationSorted(ui *currentUi) {
+
+void     searchMedicationSorted(Ui *currentUi) {
     char     subString[100];
 
     printf("Enter substring to search for: ");
     fgetc(stdin);
     fgets(subString, sizeof(subString), stdin);
     subString[strlen(subString) - 1] = '\0';
-    consoleSearchMedicationSorted(currentUi->currentConsole, subString);
+    controllerSearchMedicationSorted(currentUi->currentController, subString);
 }
+
+
+void     getMedicationByQuantity(Ui *currentUi) {
+    int     quantity;
+
+    printf("Enter limit quantity: ");
+    scanf("%d", &quantity);
+
+    controllerGetMedicationByQuantity(currentUi->currentController, quantity);
+}
+
 
 void    printMenu() {
     printf("\nAvailable options:\n");
@@ -107,6 +119,7 @@ void    printMenu() {
     printf("\t5 - delete medication from stock\n");
     printf("\t6 - search for medication from stock\n");
     printf("\t7 - search for medication from stock and sort by concentration\n");
+    printf("\t8 - get medication from stock with atleast a given quantity left\n");
 }
 
 
@@ -118,7 +131,7 @@ int    getNextOption() {
     printf("Enter your option: ");
     scanf("%d", &option);
 
-    while (option < 0 || option > 7) {
+    while (option < 0 || option > 8) {
         printf("\nInvalid option!\n");
         printMenu();
         printf("\nChoose a valid option: ");
@@ -128,8 +141,9 @@ int    getNextOption() {
     return option;
 }
 
+
 void    runApplication() {
-    ui          *currentUi;
+    Ui          *currentUi;
     int         currentOption;
 
     initialSetup(&currentUi);
@@ -137,20 +151,32 @@ void    runApplication() {
 
     currentOption = getNextOption();
     while (currentOption != 0) {
-        if (currentOption == 1)
-            getMedication(currentUi);
-        if (currentOption == 2)
-            getAllMedications(currentUi);
-        else if (currentOption == 3)
-            addMedication(currentUi);
-        else if (currentOption == 4)
-            updateMedication(currentUi);
-        else if (currentOption == 5)
-            deleteMedication(currentUi);
-        else if (currentOption == 6)
-            searchMedication(currentUi);
-        else if (currentOption == 7)
-            searchMedicationSorted(currentUi);
+        switch(currentOption) {
+           case 1:
+              getMedication(currentUi);
+              break;
+           case 2:
+              getAllMedications(currentUi);
+              break;
+           case 3:
+              addMedication(currentUi);
+              break;
+           case 4:
+              updateMedication(currentUi);
+              break;
+           case 5:
+              deleteMedication(currentUi);
+              break;
+           case 6:
+              searchMedication(currentUi);
+              break;
+           case 7:
+              searchMedicationSorted(currentUi);
+              break;
+           case 8:
+              getMedicationByQuantity(currentUi);
+              break;
+        }
         currentOption = getNextOption();
     }
 }

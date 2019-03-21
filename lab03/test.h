@@ -6,6 +6,6 @@
 #include "ui.h"
 
 
-void    populate(ui *currentUi);
+void    populate(Ui *currentUi);
 
 #endif

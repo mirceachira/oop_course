@@ -9,25 +9,28 @@
 
 
 typedef struct {
-    medication     medications[100];
+    Medication     medications[100];
     int            length;
-}    stock;
+}    Stock;
 
 
-void    repositoryInitialSetup(stock **currentStock);
+void    repositoryInitialSetup(Stock **currentStock);
 
-void    repositoryGetMedication(stock *currentStock, int index);
+void    repositoryGetMedication(Stock *currentStock, int index);
 
-void    repositoryGetAllMedications(stock *currentStock);
+void    repositoryGetAllMedications(Stock *currentStock);
 
-void     repositoryAddMedication(stock *currentStock, char name[100], int concentration, int quantity, float price);
+void     repositoryAddMedication(Stock *currentStock, char name[100], int concentration, int quantity, float price);
 
-void     repositoryUpdateMedication(stock *currentStock, int index, char name[100], int concentration, int quantity, float price);
+void     repositoryUpdateMedication(Stock *currentStock, int index, char name[100], int concentration, int quantity, float price);
 
-void    repositoryDeleteMedication(stock *currentStock, int index);
+void    repositoryDeleteMedication(Stock *currentStock, int index);
 
-void    repositorySearchMedications(stock *currentStock, char    subString[100]);
+void    repositorySearchMedications(Stock *currentStock, char    subString[100]);
 
-void    repositorySearchMedicationsSorted(stock *currentStock, char    subString[100]);
+void    repositorySearchMedicationsSorted(Stock *currentStock, char    subString[100]);
+
+void    repositoryGetMedicationByQuantity(Stock *currentStock, int quantity);
+
 
 #endif
