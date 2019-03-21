@@ -13,20 +13,20 @@ typedef struct {
 
 void    controllerInitialSetup(Controller **currentController);
 
-void    controllerGetMedication(Controller *currentController, int index);
+Medication controllerGetMedication(Controller *currentController, int index);
 
-void    controllerGetAllMedications(Controller *currentController);
+Stock *controllerGetAllMedications(Controller *currentController);
 
-void    controllerAddMedication(Controller *currentController, char name[100], int concentration, int  quantity, float price);
+int    controllerAddMedication(Controller *currentController, char name[100], int concentration, int  quantity, float price);
 
 void    controllerUpdateMedication(Controller *currentController, int index, char name[100], int concentration, int  quantity, float price);
 
 void    controllerDeleteMedication(Controller *currentController, int index);
 
-void    controllerSearchMedication(Controller *currentController, char subString[100]);
+Stock    controllerSearchMedication(Controller *currentController, char subString[100]);
 
-void    controllerSearchMedicationSorted(Controller *currentController, char subString[100]);
+Stock    controllerSearchMedicationSorted(Controller *currentController, char subString[100]);
 
-void    controllerGetMedicationByQuantity(Controller *currentController, int quantity);
+Stock    controllerGetMedicationByQuantity(Controller *currentController, int quantity);
 
 #endif

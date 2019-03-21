@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "domain.h"
 #include "controller.h"
 #include "ui.h"
 #include "test.h"
@@ -18,11 +19,31 @@ void     getMedication(Ui *currentUi) {
     printf("Enter medication index: ");
     scanf("%d", &index);
 
-    controllerGetMedication(currentUi->currentController, index);
+    Medication result = controllerGetMedication(currentUi->currentController, index);
+
+
+    printf("Medication at index %d:\n", index);
+    printf("\tname - %s\n", result.name);
+    printf("\tconcentration - %d\n", result.concentration);
+    printf("\tquantity - %d\n", result.quantity);
+    printf("\tprice - %f\n", result.price);
+    printf("\n");
 }
 
 void     getAllMedications(Ui *currentUi) {
-    controllerGetAllMedications(currentUi->currentController);
+    Stock *result = controllerGetAllMedications(currentUi->currentController);
+
+    printf("Printing all stock medication:\n");
+
+    for (int i=0; i<result->length; i++) {
+        printf("\tmedication index - %d\n", i);
+        printf("\tname - %s\n", result->medications[i].name);
+        printf("\tconcentration - %d\n", result->medications[i].concentration);
+        printf("\tquantity - %d\n", result->medications[i].quantity);
+        printf("\tprice - %f\n", result->medications[i].price);
+        printf("\n");
+    }
+
 }
 
 
@@ -42,7 +63,12 @@ void    addMedication(Ui *currentUi) {
     printf("\tprice - ");
     scanf("%f", &price);
 
-    controllerAddMedication(currentUi->currentController, name, concentration, quantity, price);
+    int result = controllerAddMedication(currentUi->currentController, name, concentration, quantity, price);
+
+    if (result == 0)
+        printf("Adding new medication!\n");
+    else
+        printf("Updating existing medication %d quantity\n", result);
 }
 
 
@@ -84,7 +110,18 @@ void     searchMedication(Ui *currentUi) {
     fgetc(stdin);
     fgets(subString, sizeof(subString), stdin);
     subString[strlen(subString) - 1] = '\0';
-    controllerSearchMedication(currentUi->currentController, subString);
+    Stock result = controllerSearchMedication(currentUi->currentController, subString);
+
+    // Display sorted medications
+    printf("\nResults:\n");
+    for (int i=0; i<result.length; i++) {
+        printf("\tmedication index - %d\n", i);
+        printf("\tname - %s\n", result.medications[i].name);
+        printf("\tconcentration - %d\n", result.medications[i].concentration);
+        printf("\tquantity - %d\n", result.medications[i].quantity);
+        printf("\tprice - %f\n", result.medications[i].price);
+        printf("\n");
+    }
 }
 
 
@@ -95,7 +132,18 @@ void     searchMedicationSorted(Ui *currentUi) {
     fgetc(stdin);
     fgets(subString, sizeof(subString), stdin);
     subString[strlen(subString) - 1] = '\0';
-    controllerSearchMedicationSorted(currentUi->currentController, subString);
+    Stock result = controllerSearchMedicationSorted(currentUi->currentController, subString);
+
+    // Display sorted medications
+    printf("\nResults:\n");
+    for (int i=0; i<result.length; i++) {
+        printf("\tmedication index - %d\n", i);
+        printf("\tname - %s\n", result.medications[i].name);
+        printf("\tconcentration - %d\n", result.medications[i].concentration);
+        printf("\tquantity - %d\n", result.medications[i].quantity);
+        printf("\tprice - %f\n", result.medications[i].price);
+        printf("\n");
+    }
 }
 
 
@@ -105,7 +153,18 @@ void     getMedicationByQuantity(Ui *currentUi) {
     printf("Enter limit quantity: ");
     scanf("%d", &quantity);
 
-    controllerGetMedicationByQuantity(currentUi->currentController, quantity);
+    Stock result = controllerGetMedicationByQuantity(currentUi->currentController, quantity);
+
+    // Display sorted medications
+    printf("\nResults:\n");
+    for (int i=0; i<result.length; i++) {
+        printf("\tmedication index - %d\n", i);
+        printf("\tname - %s\n", result.medications[i].name);
+        printf("\tconcentration - %d\n", result.medications[i].concentration);
+        printf("\tquantity - %d\n", result.medications[i].quantity);
+        printf("\tprice - %f\n", result.medications[i].price);
+        printf("\n");
+    }
 }
 
 

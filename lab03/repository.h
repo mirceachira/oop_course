@@ -16,21 +16,21 @@ typedef struct {
 
 void    repositoryInitialSetup(Stock **currentStock);
 
-void    repositoryGetMedication(Stock *currentStock, int index);
+Medication repositoryGetMedication(Stock *currentStock, int index);
 
-void    repositoryGetAllMedications(Stock *currentStock);
+Stock *repositoryGetAllMedications(Stock *currentStock);
 
-void     repositoryAddMedication(Stock *currentStock, char name[100], int concentration, int quantity, float price);
+int     repositoryAddMedication(Stock *currentStock, char name[100], int concentration, int quantity, float price);
 
 void     repositoryUpdateMedication(Stock *currentStock, int index, char name[100], int concentration, int quantity, float price);
 
 void    repositoryDeleteMedication(Stock *currentStock, int index);
 
-void    repositorySearchMedications(Stock *currentStock, char    subString[100]);
+Stock    repositorySearchMedications(Stock *currentStock, char    subString[100]);
 
-void    repositorySearchMedicationsSorted(Stock *currentStock, char    subString[100]);
+Stock    repositorySearchMedicationsSorted(Stock *currentStock, char    subString[100]);
 
-void    repositoryGetMedicationByQuantity(Stock *currentStock, int quantity);
+Stock    repositoryGetMedicationByQuantity(Stock *currentStock, int quantity);
 
 
 #endif

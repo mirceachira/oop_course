@@ -10,18 +10,18 @@ void    controllerInitialSetup(Controller **currentController) {
 }
 
 
-void    controllerGetMedication(Controller *currentController, int index) {
-    repositoryGetMedication(currentController->currentStock, index);
+Medication controllerGetMedication(Controller *currentController, int index) {
+    return repositoryGetMedication(currentController->currentStock, index);
 }
 
 
-void    controllerGetAllMedications(Controller *currentController) {
+Stock *controllerGetAllMedications(Controller *currentController) {
     repositoryGetAllMedications(currentController->currentStock);
 }
 
 
-void    controllerAddMedication(Controller *currentController, char name[100], int concentration, int  quantity, float price) {
-    repositoryAddMedication(currentController->currentStock, name, concentration, quantity, price);
+int    controllerAddMedication(Controller *currentController, char name[100], int concentration, int  quantity, float price) {
+    return repositoryAddMedication(currentController->currentStock, name, concentration, quantity, price);
 }
 
 void    controllerUpdateMedication(Controller *currentController, int index, char name[100], int concentration, int  quantity, float price) {
@@ -34,14 +34,14 @@ void    controllerDeleteMedication(Controller *currentController, int index) {
 }
 
 
-void    controllerSearchMedication(Controller *currentController, char subString[100]) {
-    repositorySearchMedications(currentController->currentStock, subString);
+Stock    controllerSearchMedication(Controller *currentController, char subString[100]) {
+    return repositorySearchMedications(currentController->currentStock, subString);
 }
 
-void    controllerSearchMedicationSorted(Controller *currentController, char subString[100]) {
-    repositorySearchMedicationsSorted(currentController->currentStock, subString);
+Stock    controllerSearchMedicationSorted(Controller *currentController, char subString[100]) {
+    return repositorySearchMedicationsSorted(currentController->currentStock, subString);
 }
 
-void    controllerGetMedicationByQuantity(Controller *currentController, int quantity) {
-    repositoryGetMedicationByQuantity(currentController->currentStock, quantity);
+Stock    controllerGetMedicationByQuantity(Controller *currentController, int quantity) {
+    return repositoryGetMedicationByQuantity(currentController->currentStock, quantity);
 }
