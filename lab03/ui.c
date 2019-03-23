@@ -170,15 +170,17 @@ void     getMedicationByQuantity(Ui *currentUi) {
 
 void    printMenu() {
     printf("\nAvailable options:\n");
-    printf("\t0 - close the application\n");
-    printf("\t1 - get medication from stock\n");
-    printf("\t2 - get all medications from stock\n");
-    printf("\t3 - add new medication from stock\n");
-    printf("\t4 - update an existing medication from stock\n");
-    printf("\t5 - delete medication from stock\n");
-    printf("\t6 - search for medication from stock\n");
-    printf("\t7 - search for medication from stock and sort by concentration\n");
-    printf("\t8 - get medication from stock with atleast a given quantity left\n");
+    printf("\t0  - close the application\n");
+    printf("\t1  - get medication from stock\n");
+    printf("\t2  - get all medications from stock\n");
+    printf("\t3  - add new medication from stock\n");
+    printf("\t4  - update an existing medication from stock\n");
+    printf("\t5  - delete medication from stock\n");
+    printf("\t6  - search for medication from stock\n");
+    printf("\t7  - search for medication from stock and sort by concentration\n");
+    printf("\t8  - get medication from stock with atleast a given quantity left\n");
+    printf("\t9  - undo\n");
+    printf("\t10 - redo\n");
 }
 
 
@@ -190,7 +192,7 @@ int    getNextOption() {
     printf("Enter your option: ");
     scanf("%d", &option);
 
-    while (option < 0 || option > 8) {
+    while (option < 0 || option > 10) {
         printf("\nInvalid option!\n");
         printMenu();
         printf("\nChoose a valid option: ");
@@ -201,6 +203,66 @@ int    getNextOption() {
 }
 
 
+void     setupActionArray(ActionArray **currentActionArray) {
+    *currentActionArray = malloc(sizeof(ActionArray));
+    (*currentActionArray)->currentIndex = -1;
+    (*currentActionArray)->maxRedoIndex = -1;
+}
+
+
+void     copyStockData(Stock *toStock, Stock *fromStock) {
+    toStock->length = fromStock->length;
+    for (int i=0; i<toStock->length; i++)
+        toStock->medications[i] = fromStock->medications[i];
+}
+
+
+void     addUiState(ActionArray *currentActionArray, Ui *currentUi) {
+    Ui *newUi;
+
+    initialSetup(&newUi);
+
+    copyStockData(newUi->currentController->currentStock, currentUi->currentController->currentStock);
+
+    if (currentActionArray->currentIndex == currentActionArray->maxRedoIndex) {
+        currentActionArray->currentIndex++;
+        currentActionArray->maxRedoIndex++;
+    } else {
+        currentActionArray->currentIndex++;
+        currentActionArray->maxRedoIndex = currentActionArray->currentIndex;
+    }
+}
+
+
+void     undo(ActionArray *currentActionArray, Ui *currentUi) {
+    if (currentActionArray->currentIndex <= 0) {
+        printf("You cannot undo any further!");
+        return;
+    }
+
+    currentActionArray->currentIndex--;
+    copyStockData(
+        currentUi->currentController->currentStock,
+        currentActionArray->uiArray[currentActionArray->currentIndex]->currentController->currentStock
+    );
+}
+
+
+void     redo(ActionArray *currentActionArray, Ui *currentUi) {
+    if (currentActionArray->currentIndex == currentActionArray->maxRedoIndex) {
+        printf("You cannot redo any further!");
+        return;
+    }
+
+    currentActionArray->currentIndex++;
+
+    copyStockData(
+        currentUi->currentController->currentStock,
+        currentActionArray->uiArray[currentActionArray->currentIndex]->currentController->currentStock
+    );
+}
+
+
 void    runApplication() {
     Ui          *currentUi;
     int         currentOption;
@@ -208,33 +270,45 @@ void    runApplication() {
     initialSetup(&currentUi);
     populate(currentUi);
 
+    ActionArray     *currentActionArray;
+    setupActionArray(&currentActionArray);
+
     currentOption = getNextOption();
     while (currentOption != 0) {
         switch(currentOption) {
-           case 1:
-              getMedication(currentUi);
-              break;
-           case 2:
-              getAllMedications(currentUi);
-              break;
-           case 3:
-              addMedication(currentUi);
-              break;
-           case 4:
-              updateMedication(currentUi);
-              break;
-           case 5:
-              deleteMedication(currentUi);
-              break;
-           case 6:
-              searchMedication(currentUi);
-              break;
-           case 7:
-              searchMedicationSorted(currentUi);
-              break;
-           case 8:
-              getMedicationByQuantity(currentUi);
-              break;
+            case 1:
+                getMedication(currentUi);
+                break;
+            case 2:
+                getAllMedications(currentUi);
+                break;
+            case 3:
+                addUiState(currentActionArray, currentUi);
+                addMedication(currentUi);
+            break;
+            case 4:
+                addUiState(currentActionArray, currentUi);
+                updateMedication(currentUi);
+                break;
+            case 5:
+                addUiState(currentActionArray, currentUi);
+                deleteMedication(currentUi);
+                break;
+            case 6:
+                searchMedication(currentUi);
+                break;
+            case 7:
+                searchMedicationSorted(currentUi);
+                break;
+            case 8:
+                getMedicationByQuantity(currentUi);
+                break;
+            case 9:
+                undo(currentActionArray, currentUi);
+                break;
+            case 10:
+                redo(currentActionArray, currentUi);
+                break;
         }
         currentOption = getNextOption();
     }

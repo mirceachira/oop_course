@@ -26,7 +26,7 @@ int     repositoryAddMedication(Stock *currentStock, char name[100], int concent
     // Check if medication already exists
     int index = -1;
     for (int i=0; i<currentStock->length; i++)
-        if ( (currentStock->medications[i].concentration = concentration && strcmp(currentStock->medications[i].name, name) == 0) ) {
+        if ( (getConcentration(currentStock->medications[i]) == concentration && strcmp(getName(currentStock->medications[i]), name) == 0) ) {
             index = i;
             break;
         }
@@ -73,13 +73,13 @@ Stock    repositorySearchMedications(Stock *currentStock, char    subString[100]
 
     // Find all medications from stock that match the substring
     for (int i=0; i<currentStock->length; i++)
-        if (strIsContained(currentStock->medications[i].name, subString) == 1)
+        if (strIsContained(getName(currentStock->medications[i]), subString) == 1)
             medicationResults[index++] = currentStock->medications[i];
 
     // Sort existing medications
     for (int i=0; i<index; i++)
         for (int j=0; j<index-i-1; j++) {
-            if (strcmp(medicationResults[j].name, medicationResults[j+1].name) > 0) {
+            if (strcmp(getName(medicationResults[j]), getName(medicationResults[j+1])) > 0) {
                 tmpMedication = medicationResults[j];
                 medicationResults[j] = medicationResults[j + 1];
                 medicationResults[j + 1] = tmpMedication;
@@ -102,13 +102,13 @@ Stock    repositorySearchMedicationsSorted(Stock *currentStock, char    subStrin
 
     // Find all medications from stock that match the substring
     for (int i=0; i<currentStock->length; i++)
-        if (strIsContained(currentStock->medications[i].name, subString) == 1)
+        if (strIsContained(getName(currentStock->medications[i]), subString) == 1)
             medicationResults[index++] = currentStock->medications[i];
 
     // Sort existing medications
     for (int i=0; i<index; i++)
         for (int j=0; j<index-i-1; j++) {
-            if (medicationResults[j].concentration < medicationResults[j+1].concentration) {
+            if (getConcentration(medicationResults[j]) < getConcentration(medicationResults[j+1])) {
                 tmpMedication = medicationResults[j];
                 medicationResults[j] = medicationResults[j + 1];
                 medicationResults[j + 1] = tmpMedication;

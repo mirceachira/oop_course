@@ -16,7 +16,7 @@ Medication controllerGetMedication(Controller *currentController, int index) {
 
 
 Stock *controllerGetAllMedications(Controller *currentController) {
-    repositoryGetAllMedications(currentController->currentStock);
+    return repositoryGetAllMedications(currentController->currentStock);
 }
 
 

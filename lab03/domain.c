@@ -5,7 +5,9 @@
 
 
 char     *toString(Medication *currentMedication) {
-    char strRepr[100];
+    char *strRepr;
+
+    strRepr = malloc(sizeof(char) * 100);
 
     strcpy(strRepr, "This medication is called: ");
     strcat(strRepr, currentMedication->name);
@@ -14,23 +16,28 @@ char     *toString(Medication *currentMedication) {
 }
 
 
-char     *getName(Medication *currentMedication) {
-    return currentMedication->name;
+char     *getName(Medication currentMedication) {
+    char *name;
+
+    name = malloc(sizeof(char) * 100);
+    strcpy(name, currentMedication.name);
+
+    return name;
 }
 
 
-int     getConcentration(Medication *currentMedication) {
-    return currentMedication->concentration;
+int     getConcentration(Medication currentMedication) {
+    return currentMedication.concentration;
 }
 
 
-int     getQuantity(Medication *currentMedication) {
-    return currentMedication->quantity;
+int     getQuantity(Medication currentMedication) {
+    return currentMedication.quantity;
 }
 
 
-int     getPrice(Medication *currentMedication) {
-    return currentMedication->price;
+float     getPrice(Medication currentMedication) {
+    return currentMedication.price;
 }
 
 

@@ -12,6 +12,13 @@ typedef struct {
 } Ui;
 
 
+typedef struct {
+    Ui      *uiArray[100];
+    int     currentIndex;
+    int     maxRedoIndex;
+} ActionArray;
+
+
 #include "test.h"
 
 
