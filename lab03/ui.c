@@ -1,20 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "domain.h"
-#include "controller.h"
 #include "ui.h"
 #include "test.h"
 
 
-void initialSetup(Ui **currentUi) {
+void
+initialSetup(Ui ** currentUi)
+{
     *currentUi = malloc(sizeof(Ui));
     controllerInitialSetup(&((*currentUi)->currentController));
 }
 
-
-void     getMedication(Ui *currentUi) {
-    int     index;
+void
+getMedication(Ui * currentUi)
+{
+    int index;
 
     printf("Enter medication index: ");
     scanf("%d", &index);
@@ -30,12 +31,14 @@ void     getMedication(Ui *currentUi) {
     printf("\n");
 }
 
-void     getAllMedications(Ui *currentUi) {
-    Stock *result = controllerGetAllMedications(currentUi->currentController);
+void
+getAllMedications(Ui * currentUi)
+{
+    Stock * result = controllerGetAllMedications(currentUi->currentController);
 
     printf("Printing all stock medication:\n");
 
-    for (int i=0; i<result->length; i++) {
+    for (int i = 0; i < result->length; i++) {
         printf("\tmedication index - %d\n", i);
         printf("\tname - %s\n", result->medications[i].name);
         printf("\tconcentration - %d\n", result->medications[i].concentration);
@@ -43,15 +46,15 @@ void     getAllMedications(Ui *currentUi) {
         printf("\tprice - %f\n", result->medications[i].price);
         printf("\n");
     }
-
 }
 
-
-void    addMedication(Ui *currentUi) {
-    char     name[100];
-    int      concentration;
-    int      quantity;
-    float    price;
+void
+addMedication(Ui * currentUi)
+{
+    char name[100];
+    int concentration;
+    int quantity;
+    float price;
 
     printf("Please specify medication features:\n");
     printf("\tname - ");
@@ -71,11 +74,12 @@ void    addMedication(Ui *currentUi) {
         printf("Updating existing medication %d quantity\n", result);
 }
 
-
-void    updateMedication(Ui *currentUi) {
-    char     name[100];
-    int      index, concentration, quantity;
-    float    price;
+void
+updateMedication(Ui * currentUi)
+{
+    char name[100];
+    int index, concentration, quantity;
+    float price;
 
     printf("Enter medication index: ");
     scanf("%d", &index);
@@ -92,9 +96,10 @@ void    updateMedication(Ui *currentUi) {
     controllerUpdateMedication(currentUi->currentController, index, name, concentration, quantity, price);
 }
 
-
-void     deleteMedication(Ui *currentUi) {
-    int     index;
+void
+deleteMedication(Ui * currentUi)
+{
+    int index;
 
     printf("Enter medication index: ");
     scanf("%d", &index);
@@ -102,9 +107,10 @@ void     deleteMedication(Ui *currentUi) {
     controllerDeleteMedication(currentUi->currentController, index);
 }
 
-
-void     searchMedication(Ui *currentUi) {
-    char     subString[100];
+void
+searchMedication(Ui * currentUi)
+{
+    char subString[100];
 
     printf("Enter substring to search for: ");
     fgetc(stdin);
@@ -114,7 +120,7 @@ void     searchMedication(Ui *currentUi) {
 
     // Display sorted medications
     printf("\nResults:\n");
-    for (int i=0; i<result.length; i++) {
+    for (int i = 0; i < result.length; i++) {
         printf("\tmedication index - %d\n", i);
         printf("\tname - %s\n", result.medications[i].name);
         printf("\tconcentration - %d\n", result.medications[i].concentration);
@@ -124,9 +130,10 @@ void     searchMedication(Ui *currentUi) {
     }
 }
 
-
-void     searchMedicationSorted(Ui *currentUi) {
-    char     subString[100];
+void
+searchMedicationSorted(Ui * currentUi)
+{
+    char subString[100];
 
     printf("Enter substring to search for: ");
     fgetc(stdin);
@@ -136,7 +143,7 @@ void     searchMedicationSorted(Ui *currentUi) {
 
     // Display sorted medications
     printf("\nResults:\n");
-    for (int i=0; i<result.length; i++) {
+    for (int i = 0; i < result.length; i++) {
         printf("\tmedication index - %d\n", i);
         printf("\tname - %s\n", result.medications[i].name);
         printf("\tconcentration - %d\n", result.medications[i].concentration);
@@ -146,9 +153,10 @@ void     searchMedicationSorted(Ui *currentUi) {
     }
 }
 
-
-void     getMedicationByQuantity(Ui *currentUi) {
-    int     quantity;
+void
+getMedicationByQuantity(Ui * currentUi)
+{
+    int quantity;
 
     printf("Enter limit quantity: ");
     scanf("%d", &quantity);
@@ -157,7 +165,7 @@ void     getMedicationByQuantity(Ui *currentUi) {
 
     // Display sorted medications
     printf("\nResults:\n");
-    for (int i=0; i<result.length; i++) {
+    for (int i = 0; i < result.length; i++) {
         printf("\tmedication index - %d\n", i);
         printf("\tname - %s\n", result.medications[i].name);
         printf("\tconcentration - %d\n", result.medications[i].concentration);
@@ -167,8 +175,9 @@ void     getMedicationByQuantity(Ui *currentUi) {
     }
 }
 
-
-void    printMenu() {
+void
+printMenu()
+{
     printf("\nAvailable options:\n");
     printf("\t0  - close the application\n");
     printf("\t1  - get medication from stock\n");
@@ -183,9 +192,10 @@ void    printMenu() {
     printf("\t10 - redo\n");
 }
 
-
-int    getNextOption() {
-    int    option;
+int
+getNextOption()
+{
+    int option;
 
     printMenu();
 
@@ -202,80 +212,44 @@ int    getNextOption() {
     return option;
 }
 
-
-void     setupActionArray(ActionArray **currentActionArray) {
+void
+setupActionArray(ActionArray ** currentActionArray)
+{
     *currentActionArray = malloc(sizeof(ActionArray));
     (*currentActionArray)->currentIndex = -1;
     (*currentActionArray)->maxRedoIndex = -1;
 }
 
-
-void     copyStockData(Stock *toStock, Stock *fromStock) {
-    toStock->length = fromStock->length;
-    for (int i=0; i<toStock->length; i++)
-        toStock->medications[i] = fromStock->medications[i];
+void
+addUiState(ActionArray * currentActionArray, Ui * currentUi)
+{
+    controllerAddUiState(currentActionArray, currentUi->currentController);
 }
 
-
-void     addUiState(ActionArray *currentActionArray, Ui *currentUi) {
-    Ui *newUi;
-
-    initialSetup(&newUi);
-
-    copyStockData(newUi->currentController->currentStock, currentUi->currentController->currentStock);
-
-    if (currentActionArray->currentIndex == currentActionArray->maxRedoIndex) {
-        currentActionArray->currentIndex++;
-        currentActionArray->maxRedoIndex++;
-    } else {
-        currentActionArray->currentIndex++;
-        currentActionArray->maxRedoIndex = currentActionArray->currentIndex;
-    }
+void
+undo(ActionArray * currentActionArray, Ui * currentUi)
+{
+    controllerUndo(currentActionArray, currentUi->currentController);
 }
 
-
-void     undo(ActionArray *currentActionArray, Ui *currentUi) {
-    if (currentActionArray->currentIndex <= 0) {
-        printf("You cannot undo any further!");
-        return;
-    }
-
-    currentActionArray->currentIndex--;
-    copyStockData(
-        currentUi->currentController->currentStock,
-        currentActionArray->uiArray[currentActionArray->currentIndex]->currentController->currentStock
-    );
+void
+redo(ActionArray * currentActionArray, Ui * currentUi)
+{
+    controllerRedo(currentActionArray, currentUi->currentController);
 }
 
+void
+runApplication(Ui * currentUi)
+{
+    int currentOption;
 
-void     redo(ActionArray *currentActionArray, Ui *currentUi) {
-    if (currentActionArray->currentIndex == currentActionArray->maxRedoIndex) {
-        printf("You cannot redo any further!");
-        return;
-    }
+    ActionArray * currentActionArray;
 
-    currentActionArray->currentIndex++;
-
-    copyStockData(
-        currentUi->currentController->currentStock,
-        currentActionArray->uiArray[currentActionArray->currentIndex]->currentController->currentStock
-    );
-}
-
-
-void    runApplication() {
-    Ui          *currentUi;
-    int         currentOption;
-
-    initialSetup(&currentUi);
-    populate(currentUi);
-
-    ActionArray     *currentActionArray;
     setupActionArray(&currentActionArray);
 
     currentOption = getNextOption();
     while (currentOption != 0) {
-        switch(currentOption) {
+        switch (currentOption) {
             case 1:
                 getMedication(currentUi);
                 break;
@@ -285,7 +259,7 @@ void    runApplication() {
             case 3:
                 addUiState(currentActionArray, currentUi);
                 addMedication(currentUi);
-            break;
+                break;
             case 4:
                 addUiState(currentActionArray, currentUi);
                 updateMedication(currentUi);
@@ -312,4 +286,4 @@ void    runApplication() {
         }
         currentOption = getNextOption();
     }
-}
+} /* runApplication */

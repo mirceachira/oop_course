@@ -4,8 +4,10 @@
 #include "domain.h"
 
 
-char     *toString(Medication *currentMedication) {
-    char *strRepr;
+char     *
+toString(Medication * currentMedication)
+{
+    char * strRepr;
 
     strRepr = malloc(sizeof(char) * 100);
 
@@ -15,9 +17,10 @@ char     *toString(Medication *currentMedication) {
     return strRepr;
 }
 
-
-char     *getName(Medication currentMedication) {
-    char *name;
+char     *
+getName(Medication currentMedication)
+{
+    char * name;
 
     name = malloc(sizeof(char) * 100);
     strcpy(name, currentMedication.name);
@@ -25,35 +28,40 @@ char     *getName(Medication currentMedication) {
     return name;
 }
 
-
-int     getConcentration(Medication currentMedication) {
+int
+getConcentration(Medication currentMedication)
+{
     return currentMedication.concentration;
 }
 
-
-int     getQuantity(Medication currentMedication) {
+int
+getQuantity(Medication currentMedication)
+{
     return currentMedication.quantity;
 }
 
-
-float     getPrice(Medication currentMedication) {
+float
+getPrice(Medication currentMedication)
+{
     return currentMedication.price;
 }
 
-
-Medication *createMedication(char name[], int concentration, int quantity, float price) {
-    Medication *newMedication = malloc(sizeof(Medication));
+Medication *
+createMedication(char name[], int concentration, int quantity, float price)
+{
+    Medication * newMedication = malloc(sizeof(Medication));
 
     strcpy(newMedication->name, name);
     newMedication->concentration = concentration;
-    newMedication->quantity = quantity;
-    newMedication->price = price;
+    newMedication->quantity      = quantity;
+    newMedication->price         = price;
 
     return newMedication;
 }
 
-
-void    destroyMedication(Medication *currentMedication) {
+void
+destroyMedication(Medication * currentMedication)
+{
     free(currentMedication->name);
     free(currentMedication);
 }

@@ -6,6 +6,7 @@
 #include "ui.h"
 
 
-void    populate(Ui *currentUi);
+void
+populate(Ui * currentUi);
 
-#endif
+#endif // ifndef TEST

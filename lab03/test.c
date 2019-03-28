@@ -4,7 +4,9 @@
 #include "test.h"
 
 
-void    populate(Ui *currentUi) {
+void
+populate(Ui * currentUi)
+{
     controllerAddMedication(
         currentUi->currentController,
         "algocalmin",
@@ -82,4 +84,4 @@ void    populate(Ui *currentUi) {
         0,
         13
     );
-}
+} /* populate */

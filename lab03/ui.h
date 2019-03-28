@@ -8,41 +8,54 @@
 
 
 typedef struct {
-    Controller     *currentController;
+    Controller * currentController;
 } Ui;
-
-
-typedef struct {
-    Ui      *uiArray[100];
-    int     currentIndex;
-    int     maxRedoIndex;
-} ActionArray;
 
 
 #include "test.h"
 
 
-void     initialSetup(Ui **currentUi);
+void
+initialSetup(Ui ** currentUi);
 
-void     getMedication(Ui *currentUi);
+void
+getMedication(Ui * currentUi);
 
-void     getAllMedications(Ui *currentUi);
+void
+getAllMedications(Ui * currentUi);
 
-void     addMedication(Ui *currentUi);
+void
+addMedication(Ui * currentUi);
 
-void     updateMedication(Ui *currentUi);
+void
+updateMedication(Ui * currentUi);
 
-void     deleteMedication(Ui *currentUi);
+void
+deleteMedication(Ui * currentUi);
 
-void     searchMedication(Ui *currentUi);
+void
+searchMedication(Ui * currentUi);
 
-void     getMedicationByQuantity(Ui *currentUi);
+void
+getMedicationByQuantity(Ui * currentUi);
 
-void     printMenu();
+void
+printMenu();
 
-int      getNextOption();
+int
+getNextOption();
 
-void     runApplication();
+void
+undo(ActionArray * currentActionArray, Ui * currentUi);
+
+void
+redo(ActionArray * currentActionArray, Ui * currentUi);
+
+void
+addUiState(ActionArray * currentActionArray, Ui * currentUi);
+
+void
+runApplication(Ui * currentUi);
 
 
-#endif
+#endif // ifndef UI
