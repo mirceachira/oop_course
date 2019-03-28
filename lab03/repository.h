@@ -60,4 +60,10 @@ copyStockData(Stock * toStock, Stock * fromStock);
 void
 repositoryAddUiState(ActionArray * currentActionArray, Stock * currentStock);
 
+void
+repositoryCleanup(Stock * currentStock);
+
+void
+repositoryCleanupActionArray(ActionArray * currentActionArray);
+
 #endif // ifndef REPOSITORY

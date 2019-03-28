@@ -48,4 +48,10 @@ controllerRedo(ActionArray * currentActionArray, Controller * currentController)
 void
 controllerAddUiState(ActionArray * currentActionArray, Controller * currentController);
 
+void
+controllerCleanup(Controller * currentController);
+
+void
+controllerCleanupActionArray(ActionArray * currentActionArray);
+
 #endif // ifndef CONTROLLER

@@ -60,6 +60,14 @@ Medication *
 createMedication(char name[], int concentration, int quantity, float price);
 
 /*
+ * Create a copy of a medication
+ * in: medication
+ * out:
+ */
+Medication *
+copyMedication(Medication currentMedication);
+
+/*
  * Dealocate medication memory
  * in: medication
  * out:

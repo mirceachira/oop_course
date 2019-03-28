@@ -59,9 +59,19 @@ createMedication(char name[], int concentration, int quantity, float price)
     return newMedication;
 }
 
+Medication *
+copyMedication(Medication currentMedication)
+{
+    return createMedication(
+        getName(currentMedication),
+        getConcentration(currentMedication),
+        getQuantity(currentMedication),
+        getPrice(currentMedication)
+    );
+}
+
 void
 destroyMedication(Medication * currentMedication)
 {
     free(currentMedication->name);
-    free(currentMedication);
 }

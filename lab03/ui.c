@@ -239,6 +239,18 @@ redo(ActionArray * currentActionArray, Ui * currentUi)
 }
 
 void
+cleanupUi(Ui * currentUi)
+{
+    controllerCleanup(currentUi->currentController);
+}
+
+void
+cleanupActionArray(ActionArray * currentActionArray)
+{
+    controllerCleanupActionArray(currentActionArray);
+}
+
+void
 runApplication(Ui * currentUi)
 {
     int currentOption;
@@ -286,4 +298,7 @@ runApplication(Ui * currentUi)
         }
         currentOption = getNextOption();
     }
+    cleanupUi(currentUi);
+    cleanupActionArray(currentActionArray);
+
 } /* runApplication */

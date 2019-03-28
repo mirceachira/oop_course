@@ -209,3 +209,17 @@ repositoryAddUiState(ActionArray * currentActionArray, Stock * currentStock)
 
     currentActionArray->stockArray[currentActionArray->currentIndex] = newStock;
 }
+
+void
+repositoryCleanup(Stock * currentStock)
+{
+    destroyMedication(currentStock->medications);
+}
+
+void
+repositoryCleanupActionArray(ActionArray * currentActionArray)
+{
+    for (int i=0; i<currentActionArray->maxRedoIndex; i++)
+        repositoryCleanup(currentActionArray->stockArray[i]);
+    free(currentActionArray->stockArray);
+}

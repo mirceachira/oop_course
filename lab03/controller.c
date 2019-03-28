@@ -79,3 +79,15 @@ controllerAddUiState(ActionArray * currentActionArray, Controller * currentContr
 {
     repositoryAddUiState(currentActionArray, currentController->currentStock);
 }
+
+void
+controllerCleanup(Controller * currentController)
+{
+    repositoryCleanup(currentController->currentStock);
+}
+
+void
+controllerCleanupActionArray(ActionArray * currentActionArray)
+{
+    repositoryCleanupActionArray(currentActionArray);
+}

@@ -57,5 +57,10 @@ addUiState(ActionArray * currentActionArray, Ui * currentUi);
 void
 runApplication(Ui * currentUi);
 
+void
+cleanupUi(Ui * currentUi);
+
+void
+cleanupActionArray(ActionArray * currentActionArray);
 
 #endif // ifndef UI

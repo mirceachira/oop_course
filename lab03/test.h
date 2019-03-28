@@ -9,4 +9,7 @@
 void
 populate(Ui * currentUi);
 
+void
+runTests();
+
 #endif // ifndef TEST

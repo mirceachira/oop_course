@@ -1,19 +1,29 @@
+#include <string.h>
+
 #include "ui.h"
-
-int
-main(void)
-{
-    Ui * currentUi;
-
-    initialSetup(&currentUi);
-    populate(currentUi);
-    runApplication(currentUi);
-}
+#include "test.h"
 
 /*
- *  TODO:
- * implement copy logic? (see seminar 2 & 3)
- * move undo / redo in repository only
- * operation stack undo / redo
- * tests for repository and controller (not for domain)
+ * To compile on linux (with gcc):
+ * gcc -Wall -Wextra -Werror *.h *.c
+ *
+ * To run the program:
+ * ./a.out
+ *
+ * To run the tests:
+ * ./a.out test
+ *
  */
+int
+main(int argc, char * argv[])
+{
+    if (argc == 2 && strcmp(argv[1], "test") == 0) {
+        runTests();
+    } else {
+        Ui * currentUi;
+
+        initialSetup(&currentUi);
+        populate(currentUi);
+        runApplication(currentUi);
+    }
+}
