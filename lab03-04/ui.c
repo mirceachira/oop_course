@@ -300,5 +300,4 @@ runApplication(Ui * currentUi)
     }
     cleanupUi(currentUi);
     cleanupActionArray(currentActionArray);
-
 } /* runApplication */
