@@ -4,24 +4,27 @@
 #include "controller.h"
 
 void
-printMenu();
+printMenu(bool isAdministrator);
 
 int
-getNextOption();
+getNextOption(bool isAdministrator);
 
 void
-displayEntry(Bill entry);
+displayEntry(Dog entry);
 
 
 class Ui {
 private:
     Controller controller;
 public:
+    // Utilities
     Ui();
     Ui(const Ui& otherUi);
     ~Ui();
     void
     uiRunApplication();
+
+    // Administrator
     void
     uiGetEntry();
     void
@@ -32,8 +35,20 @@ public:
     uiUpdateEntry();
     void
     uiDeleteEntry();
+
+    // User
     void
-    uiCalculateUnpaid();
+    uiAdoptFromAllPets();
+    void
+    uiSelectByBreedAndAge();
+    void
+    uiGetCurrentPet();
+    void
+    uiGetNextPet();
+    void
+    uiAdoptCurrentPet();
+    void
+    uiSeeAdoptedPets();
 };
 
 #endif // ifndef UI

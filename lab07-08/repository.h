@@ -1,13 +1,17 @@
 #ifndef REPO
 #define REPO
 
+#include <vector>
+
 #include "domain.h"
-#include "utils.h"
+
+using namespace std;
 
 class Repository {
 private:
-    DynamicVector<Dog> stock;
+    vector<Dog> stock;
     User user;
+    string filename = "database.txt";
 public:
     /*
      * Default repo constuctor
@@ -41,7 +45,7 @@ public:
      * In  - nothing
      * Out - current dog stock
      */
-    DynamicVector<Dog>
+    vector<Dog>
     repositoryGetAllEntries();
     /*
      * Create an entry
@@ -106,8 +110,24 @@ public:
      * In  - nothing
      * Out - adopted pets stock
      */
-    DynamicVector<Dog>
+    vector<Dog>
     repositoryGetAdoptedPets();
+
+    /*
+     * Read from file
+     * In  - nothing
+     * Out - adopted pets stock
+     */
+    void
+    readFromFile();
+
+    /*
+     * Write to file
+     * In  - nothing
+     * Out - adopted pets stock
+     */
+    void
+    writeToFile();
 };
 
 #endif // ifndef REPO

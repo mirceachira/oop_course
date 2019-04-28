@@ -1,8 +1,12 @@
 #ifndef CONTROLLER
 #define CONTROLLER
 
+#include <vector>
+
 #include "repository.h"
 #include "domain.h"
+
+using namespace std;
 
 class Controller {
 private:
@@ -16,7 +20,7 @@ public:
     // Administrator
     Dog
     controllerGetEntry(int index);
-    DynamicVector<Dog>
+    vector<Dog>
     controllerGetAllEntries();
     bool
     controllerCreateEntry(string breed, string name, int age, string photo);
@@ -36,7 +40,7 @@ public:
     controllerGetNextPet();
     void
     controllerAdoptCurrentPet();
-    DynamicVector<Dog>
+    vector<Dog>
     controllerGetAdoptedPets();
 };
 

@@ -24,19 +24,46 @@ Repository::repositoryGetAllEntries()
     return stock;
 }
 
-void
-Repository::repositoryCreateEntry(string breed, string name, int age, string photo)
+bool
+validateEntry(string breed, string name, int age, string photo)
 {
-    stock.add(Dog(breed, name, age, photo));
+    if (breed.length() <= 2)
+        return false;
+
+    if (name.length() <= 2)
+        return false;
+
+    if (age < 0 || age > 30)
+        return false;
+
+    if (photo.find("http") != 0 && photo.find("www") != 0)
+        return false;
+
+    return true;
 }
 
-void
+bool
+Repository::repositoryCreateEntry(string breed, string name, int age, string photo)
+{
+    if (validateEntry(breed, name, age, photo) == 0)
+        return false;
+
+    stock.add(Dog(breed, name, age, photo));
+    return true;
+}
+
+bool
 Repository::repositoryUpdateEntry(int index, string breed, string name, int age, string photo)
 {
+    if (validateEntry(breed, name, age, photo) == 0)
+        return false;
+    
     stock[index].setBreed(breed);
     stock[index].setName(name);
     stock[index].setAge(age);
     stock[index].setPhoto(photo);
+
+    return true;
 }
 
 void

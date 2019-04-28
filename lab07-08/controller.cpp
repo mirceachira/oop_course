@@ -1,6 +1,10 @@
+#include <vector>
+
 #include "controller.h"
 #include "repository.h"
 #include "domain.h"
+
+using namespace std;
 
 Controller::Controller()
 {
@@ -19,7 +23,7 @@ Controller::controllerGetEntry(int index)
     return repository.repositoryGetEntry(index);
 }
 
-DynamicVector<Dog>
+vector<Dog>
 Controller::controllerGetAllEntries()
 {
     return repository.repositoryGetAllEntries();
@@ -28,13 +32,21 @@ Controller::controllerGetAllEntries()
 bool
 Controller::controllerCreateEntry(string breed, string name, int age, string photo)
 {
-    return repository.repositoryCreateEntry(breed, name, age, photo);
+    bool result = repository.repositoryCreateEntry(breed, name, age, photo);
+    if (result)
+        repository.writeToFile();
+
+    return result;
 }
 
 bool
 Controller::controllerUpdateEntry(int index, string breed, string name, int age, string photo)
 {
-    return repository.repositoryUpdateEntry(index, breed, name, age, photo);
+    bool result = repository.repositoryUpdateEntry(index, breed, name, age, photo);
+    if (result)
+        repository.writeToFile();
+
+    return result;
 }
 
 void
@@ -73,7 +85,7 @@ Controller::controllerAdoptCurrentPet()
     repository.repositoryAdoptCurrentPet();
 }
 
-DynamicVector<Dog>
+vector<Dog>
 Controller::controllerGetAdoptedPets()
 {
     return repository.repositoryGetAdoptedPets();

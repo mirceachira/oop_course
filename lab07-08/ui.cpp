@@ -1,10 +1,13 @@
 #include <iostream>
 #include <stdio.h>
+#include <vector>
 
 #include "ui.h"
 #include "controller.h"
 #include "domain.h"
 #include "tests.h"
+
+using namespace std;
 
 void
 printMenu(bool isAdministrator)
@@ -159,9 +162,9 @@ Ui::uiAdoptCurrentPet()
 void
 Ui::uiSeeAdoptedPets()
 {
-    DynamicVector<Dog> adoptedPets = controller.controllerGetAdoptedPets();
+    vector<Dog> adoptedPets = controller.controllerGetAdoptedPets();
 
-    for (int i = 0; i < adoptedPets.getSize(); i++)
+    for (int i = 0; i < (int)adoptedPets.size(); i++)
         displayEntry(adoptedPets[i]);
 }
 
@@ -190,9 +193,9 @@ Ui::uiGetEntry()
 void
 Ui::uiGetAllEntries()
 {
-    DynamicVector<Dog> entries = controller.controllerGetAllEntries();
+    vector<Dog> entries = controller.controllerGetAllEntries();
 
-    for (int i = 0; i < entries.getSize(); i++)
+    for (int i = 0; i < (int)entries.size(); i++)
         displayEntry(entries[i]);
 }
 
