@@ -49,6 +49,9 @@ public:
     uiAdoptCurrentPet();
     void
     uiSeeAdoptedPets();
+
+    void
+    seeAdoptedPetsFile(int fileType);
 };
 
 #endif // ifndef UI

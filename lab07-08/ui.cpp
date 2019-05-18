@@ -27,6 +27,7 @@ printMenu(bool isAdministrator)
         printf("\t4  - see next pet\n");
         printf("\t5  - adopt current pet\n");
         printf("\t6  - see adopted pets\n");
+        printf("\t7  - see adopted pets file\n");
     }
 }
 
@@ -40,7 +41,7 @@ getNextOption(bool isAdministrator)
     printf("Enter your option: ");
     scanf("%d", &option);
 
-    int upperLimit = isAdministrator ? 5 : 6; // Relevant if more choices are added
+    int upperLimit = isAdministrator ? 5 : 7; // Relevant if more choices are added
     while (option < 0 || option > upperLimit) {
         printf("\nInvalid option!\n");
         printMenu(isAdministrator);
@@ -65,7 +66,7 @@ Ui::~Ui(){ }
 void
 Ui::uiRunApplication()
 {
-    bool isAdministrator;
+    bool isAdministrator, fileType;
 
     populateApplication(controller);
 
@@ -73,6 +74,12 @@ Ui::uiRunApplication()
 
     printf("Available mods:\n\t1 - administrator\n\t0 - user\nEnter your mode: ");
     std::cin >> isAdministrator;
+
+    if (isAdministrator == 0)
+    {
+        cout << "Please select file type to use for display:\n\t0 - csv\n\t1 - html\nWhich one boss? ";
+        cin >> fileType;
+    }
 
     int currentOption = getNextOption(isAdministrator);
     while (currentOption != 0) {
@@ -114,11 +121,14 @@ Ui::uiRunApplication()
                 case 6:
                     this->uiSeeAdoptedPets();
                     break;
+                case 7:
+                    this->seeAdoptedPetsFile(fileType);
+                    break;
             }
         }
         currentOption = getNextOption(isAdministrator);
     }
-} // Ui::uiRunApplication
+}
 
 void
 Ui::uiAdoptFromAllPets()
@@ -259,4 +269,13 @@ Ui::uiDeleteEntry()
     std::cin >> index;
 
     controller.controllerDeleteEntry(index);
+}
+
+void
+Ui::seeAdoptedPetsFile(int fileType)
+{
+    if (fileType)
+        system("xdg-open plop.html");
+    else
+        system("subl plop.csv");
 }
