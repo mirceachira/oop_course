@@ -179,7 +179,9 @@ Repository::writeToFile()
     row.writeToFile(stock);
 
     bool toHtml = true;
-    if (toHtml) {
-        row.writeToHTML(stock);
+    if (toHtml)
+    {
+        HtmlHandler html_row;
+        html_row.writeToFile(stock);
     }
 }

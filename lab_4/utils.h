@@ -7,7 +7,7 @@
 #include "domain.h"
 
 
-class CsvHandler
+class TextFileHandler
 {
 public:
     std::string const&
@@ -16,12 +16,24 @@ public:
     size() const;
     void
     readNextRow(std::istream& str);
-    void
-    writeToFile(std::vector<Dog> dogVector);
-    void
-    writeToHTML(std::vector<Dog> dogVector);
+    virtual void
+    writeToFile(std::vector<Dog> dogVector)=0;
 private:
     std::vector<std::string> m_data;
+};
+
+class CsvHandler : public TextFileHandler
+{
+public:
+    void
+    writeToFile(std::vector<Dog> dogVector);
+};
+
+class HtmlHandler : public TextFileHandler
+{
+public:
+    void
+    writeToFile(std::vector<Dog> dogVector);
 };
 
 #endif // ifndef UTILS

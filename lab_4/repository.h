@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "domain.h"
+#include "utils.h"
 
 using namespace std;
 

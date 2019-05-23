@@ -10,19 +10,19 @@
 
 
 std::string const
-& CsvHandler::operator [] (std::size_t index) const
+& TextFileHandler::operator [] (std::size_t index) const
 {
     return m_data[index];
 }
 
 std::size_t
-CsvHandler::size() const
+TextFileHandler::size() const
 {
     return m_data.size();
 }
 
 void
-CsvHandler::readNextRow(std::istream& str)
+TextFileHandler::readNextRow(std::istream& str)
 {
     std::string line;
 
@@ -56,7 +56,7 @@ CsvHandler::writeToFile(std::vector<Dog> dogVector)
 }
 
 void
-CsvHandler::writeToHTML(std::vector<Dog> dogVector)
+HtmlHandler::writeToFile(std::vector<Dog> dogVector)
 {
     string htmlStart = "<!DOCTYPE html><html><head><style>table {font-family: arial, sans-serif;border-collapse: collapse;width: 100%;}td, th {border: 1px solid #dddddd;text-align: left;padding: 8px;}tr:nth-child(even) {background-color: #dddddd;}</style></head><body><h2>Pets available</h2><table><tr><th>Bree</th><th>Name</th><th>Age</th><th>Photo</th></tr>";
     string htmlEnd = "</table></body></html>";
