@@ -13,6 +13,8 @@ private:
     vector<Dog> stock;
     User user;
     string filename = "database.txt";
+    CsvHandler csvHandler;
+    HtmlHandler htmlHandler;
 public:
     /*
      * Default repo constuctor
@@ -128,7 +130,7 @@ public:
      * Out - adopted pets stock
      */
     void
-    writeToFile();
+    writeToFile(bool toHtml);
 };
 
 #endif // ifndef REPO

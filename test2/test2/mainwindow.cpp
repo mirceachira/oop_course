@@ -5,8 +5,8 @@
 #include <iostream>
 
 #include "controller.h"
-#include "tests.h"
-//#include "utils.h"
+#include "dialog.h"
+
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -15,47 +15,17 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     this->ctrl = new Controller();
     ui->setupUi(this);
+    ui->centralWidget->hide();
 
-    for (auto i: this->ctrl->getStock()){
-        string newVal = (i.name + ", " + i.category + ", " + to_string(i.quantity));
-        ui->theList->addItem(QString(newVal.c_str()));
+    for (auto i: this->ctrl->getProgrammers()){
+        dialog * d = new dialog;
+        d->setProgrammer(i);
+        dialogs.push_back(d);
+        d->show();
     }
-
-    runTests();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::on_theButton_clicked()
-{
-    for(int i = 0; i < ui->theList->count(); ++i)
-    {
-        QListWidgetItem* item = ui->theList->item(i);
-        if (item->isSelected())
-           this->ctrl->deleteItem(i);
-    }
-
-    ui->theList->clear();
-    for (auto i: this->ctrl->getStock()){
-        string newVal = (i.name + ", " + i.category + ", " + to_string(i.quantity));
-        ui->theList->addItem(QString(newVal.c_str()));
-    }
-
-}
-
-void MainWindow::on_filter_clicked()
-{
-    string category = ui->filterInput->text().toUtf8().constData();
-
-    if (!category.length())
-        return;
-
-    ui->theList->clear();
-    for (auto i: this->ctrl->getFiltered(category)){
-        string newVal = (i.name + ", " + i.category + ", " + to_string(i.quantity));
-        ui->theList->addItem(QString(newVal.c_str()));
-    }
 }

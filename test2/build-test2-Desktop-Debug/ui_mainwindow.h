@@ -11,11 +11,9 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QListWidget>
+#include <QtWidgets/QListView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
-#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
@@ -26,10 +24,8 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralWidget;
-    QPushButton *theButton;
-    QListWidget *theList;
-    QLineEdit *filterInput;
-    QPushButton *filter;
+    QListView *programmerList;
+    QListView *listView_2;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -38,25 +34,19 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(416, 325);
+        MainWindow->resize(360, 437);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        theButton = new QPushButton(centralWidget);
-        theButton->setObjectName(QStringLiteral("theButton"));
-        theButton->setGeometry(QRect(280, 10, 111, 41));
-        theList = new QListWidget(centralWidget);
-        theList->setObjectName(QStringLiteral("theList"));
-        theList->setGeometry(QRect(10, 10, 256, 192));
-        filterInput = new QLineEdit(centralWidget);
-        filterInput->setObjectName(QStringLiteral("filterInput"));
-        filterInput->setGeometry(QRect(10, 210, 261, 41));
-        filter = new QPushButton(centralWidget);
-        filter->setObjectName(QStringLiteral("filter"));
-        filter->setGeometry(QRect(280, 210, 111, 41));
+        programmerList = new QListView(centralWidget);
+        programmerList->setObjectName(QStringLiteral("programmerList"));
+        programmerList->setGeometry(QRect(20, 10, 256, 192));
+        listView_2 = new QListView(centralWidget);
+        listView_2->setObjectName(QStringLiteral("listView_2"));
+        listView_2->setGeometry(QRect(30, 210, 256, 192));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 416, 22));
+        menuBar->setGeometry(QRect(0, 0, 360, 22));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -73,8 +63,6 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
-        theButton->setText(QApplication::translate("MainWindow", "delete", nullptr));
-        filter->setText(QApplication::translate("MainWindow", "filter", nullptr));
     } // retranslateUi
 
 };

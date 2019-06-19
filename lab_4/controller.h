@@ -5,15 +5,18 @@
 
 #include "repository.h"
 #include "domain.h"
+#include "utils.h"
 
 using namespace std;
 
 class Controller {
 private:
     Repository repository;
+    TextFileHandler* handler;
 public:
     // Utilities
     Controller();
+    Controller(TextFileHandler* handler);
     Controller(const Controller& otherController);
     ~Controller();
 

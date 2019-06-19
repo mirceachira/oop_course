@@ -1,281 +1,205 @@
-#include <iostream>
-#include <stdio.h>
 #include <vector>
+
+#include <QMessageBox>
 
 #include "ui.h"
 #include "controller.h"
 #include "domain.h"
-#include "tests.h"
+#include "utils.h"
 
-using namespace std;
 
-void
-printMenu(bool isAdministrator)
-{
-    printf("\nAvailable options:\n");
-    printf("\t0  - close the application\n");
-    if (isAdministrator) {
-        printf("\t1  - get pet from stock by index\n");
-        printf("\t2  - get all pets from stock\n");
-        printf("\t3  - add new pet from stock\n");
-        printf("\t4  - update an existing pet from stock\n");
-        printf("\t5  - delete pet from stock\n");
-    } else {
-        printf("\t1  - adopt from all pets\n");
-        printf("\t2  - select pets by breed and age\n");
-        printf("\t3  - see current pet\n");
-        printf("\t4  - see next pet\n");
-        printf("\t5  - adopt current pet\n");
-        printf("\t6  - see adopted pets\n");
-        printf("\t7  - see adopted pets file\n");
-    }
-}
-
-int
-getNextOption(bool isAdministrator)
-{
-    int option;
-
-    printMenu(isAdministrator);
-
-    printf("Enter your option: ");
-    scanf("%d", &option);
-
-    int upperLimit = isAdministrator ? 5 : 7; // Relevant if more choices are added
-    while (option < 0 || option > upperLimit) {
-        printf("\nInvalid option!\n");
-        printMenu(isAdministrator);
-        printf("\nChoose a valid option: ");
-        scanf("%d", &option);
-    }
-
-    return option;
-}
-
-Ui::Ui()
+Ui::Ui(QWidget * parent) : QWidget(parent)
 {
     Controller controller;
 
     this->controller = controller;
+    this->initGUI();
+    this->currentDogsInRepoList = this->controller.controllerGetAllEntries();
+    this->populateRepoList();
 }
 
-Ui::Ui(const Ui& otherUi){ this->controller = otherUi.controller; }
-
-Ui::~Ui(){ }
+Ui::~Ui()
+{ }
 
 void
-Ui::uiRunApplication()
+Ui::initGUI()
 {
-    bool isAdministrator, fileType;
+    // General layout of the window
+    QHBoxLayout * layout = new QHBoxLayout{ this };
 
-    populateApplication(controller);
+    // Prepare left side components - vertical layout with:
+    // - list
+    // - form layout with the song data
+    // - grid layout with buttons: add, delete, update, filter
+    QWidget * leftWidget   = new QWidget{ };
+    QVBoxLayout * leftSide = new QVBoxLayout{ leftWidget };
 
-    runTests(controller);
+    // list
+    this->repoList = new QListWidget{ };
+    // set the selection model
+    this->repoList->setSelectionMode(QAbstractItemView::SingleSelection);
 
-    printf("Available mods:\n\t1 - administrator\n\t0 - user\nEnter your mode: ");
-    std::cin >> isAdministrator;
+    // song data
+    QWidget * songDataWidget = new QWidget{ };
+    QFormLayout * formLayout = new QFormLayout{ songDataWidget };
+    this->breedEdit = new QLineEdit{ };
+    this->nameEdit  = new QLineEdit{ };
+    this->photoEdit = new QLineEdit{ };
+    this->ageEdit   = new QLineEdit{ };
+    formLayout->addRow("&breed:", breedEdit);
+    formLayout->addRow("&name:", nameEdit);
+    formLayout->addRow("&photo:", photoEdit);
+    formLayout->addRow("&age:", ageEdit);
 
-    if (isAdministrator == 0)
+    // buttons
+    QWidget * buttonsWidget  = new QWidget{ };
+    QGridLayout * gridLayout = new QGridLayout{ buttonsWidget };
+    this->addButton    = new QPushButton{ "Add" };
+    this->deleteButton = new QPushButton{ "Delete" };
+    this->filterButton = new QPushButton{ "Filter" };
+
+    gridLayout->addWidget(addButton, 0, 0);
+    gridLayout->addWidget(deleteButton, 0, 1);
+    gridLayout->addWidget(filterButton, 0, 2);
+
+    // add everything to the left layout
+    leftSide->addWidget(new QLabel{ "All dogs" });
+    leftSide->addWidget(repoList);
+    leftSide->addWidget(songDataWidget);
+    leftSide->addWidget(buttonsWidget);
+
+    // middle component: just two button - to add the songs from the reposiotory to the playlist
+    QWidget * middleWidget      = new QWidget{ };
+    QVBoxLayout * vLayoutMiddle = new QVBoxLayout{ middleWidget };
+    this->moveOneSongButton = new QPushButton{ ">> Move one song" };
+    QWidget * upperPart = new QWidget{ };
+    QVBoxLayout * vLayoutUpperPart = new QVBoxLayout{ upperPart };
+    vLayoutUpperPart->addWidget(this->moveOneSongButton);
+    vLayoutMiddle->addWidget(upperPart);
+
+    // Prepare right side components - vertical layout with:
+    // - list
+    // - grid layout with buttons: add, delete, update, filter
+    QWidget * rightWidget   = new QWidget{ };
+    QVBoxLayout * rightSide = new QVBoxLayout{ rightWidget };
+
+    // list
+    this->playList = new QListWidget{ };
+
+    // add everything to the right layout
+    rightSide->addWidget(new QLabel{ "Playlist" });
+    rightSide->addWidget(playList);
+
+    // add the three layouts to the main layout
+    layout->addWidget(leftWidget);
+    layout->addWidget(middleWidget);
+    layout->addWidget(rightWidget);
+
+    // connect the signals and slots
+    this->connectSignalsAndSlots();
+} // Ui::initGUI
+
+void
+Ui::populateRepoList()
+{
+    // clear the list, if there are elements in it
+    if (this->repoList->count() > 0)
+        this->repoList->clear();
+
+    for (auto song : this->currentSongsInRepoList) {
+        QString itemInList      = QString::fromStdString(song.getArtist() + " - " + song.getTitle());
+        QListWidgetItem * item3 = new QListWidgetItem(itemInList);
+        this->repoList->addItem(item3);
+    }
+
+    // set the selection on the first item in the list
+    if (this->currentSongsInRepoList.size() > 0)
+        this->repoList->setCurrentRow(0);
+}
+
+int
+Ui::getRepoListSelectedIndex()
+{
+    if (this->repoList->count() == 0)
+        return -1;
+
+    // get selected index
+    QModelIndexList index = this->repoList->selectionModel()->selectedIndexes();
+    if (index.size() == 0) {
+        this->titleEdit->clear();
+        this->artistEdit->clear();
+        this->durationEdit->clear();
+        this->linkEdit->clear();
+        return -1;
+    }
+
+    int idx = index.at(0).row();
+    return idx;
+}
+
+void
+Ui::listItemChanged()
+{
+    int idx = this->getRepoListSelectedIndex();
+
+    if (idx == -1)
+        return;
+
+    std::vector<Song> songs = this->currentSongsInRepoList;
+
+    // get the song at the selected index
+    if (idx >= songs.size())
+        return;
+
+    Song s = songs[idx];
+
+    this->artistEdit->setText(QString::fromStdString(s.getArtist()));
+    this->titleEdit->setText(QString::fromStdString(s.getTitle()));
+    this->durationEdit->setText(QString::fromStdString(s.getDuration().toString()));
+    this->linkEdit->setText(QString::fromStdString(s.getSource()));
+}
+
+void
+Ui::connectSignalsAndSlots()
+{
+    // add a connection: function listItemChanged() will be called when an item in the list is selected
+    QObject::connect(this->repoList, SIGNAL(itemSelectionChanged()), this, SLOT(listItemChanged()));
+
+    // add button connections
+    QObject::connect(this->addButton, SIGNAL(clicked()), this, SLOT(addNewSong()));
+}
+
+void
+Ui::addNewSong()
+{
+    std::string artist   = this->artistEdit->text().toStdString();
+    std::string title    = this->titleEdit->text().toStdString();
+    std::string duration = this->durationEdit->text().toStdString();
+    // get minutes and seconds
+    std::vector<std::string> durationTokens = tokenize(duration, ':');
+
+    if (durationTokens.size() != 2) {
+        QMessageBox messageBox;
+        messageBox.critical(0, "Error", "The duration must have minutes and seconds, separated by \":\"!");
+        return;
+    }
+    std::string source = this->linkEdit->text().toStdString();
+
+    try
     {
-        cout << "Please select file type to use for display:\n\t0 - csv\n\t1 - html\nWhich one boss? ";
-        cin >> fileType;
+        this->ctrl.addSongToRepository(artist, title, stod(durationTokens[0]), stod(durationTokens[1]), source);
+        // refresh the list
+        this->currentSongsInRepoList = this->ctrl.getAllSongs();
+        this->populateRepoList();
     }
-
-    int currentOption = getNextOption(isAdministrator);
-    while (currentOption != 0) {
-        if (isAdministrator) {
-            switch (currentOption) {
-                case 1:
-                    this->uiGetEntry();
-                    break;
-                case 2:
-                    this->uiGetAllEntries();
-                    break;
-                case 3:
-                    this->uiCreateEntry();
-                    break;
-                case 4:
-                    this->uiUpdateEntry();
-                    break;
-                case 5:
-                    this->uiDeleteEntry();
-                    break;
-            }
-        } else {
-            switch (currentOption) {
-                case 1:
-                    this->uiAdoptFromAllPets();
-                    break;
-                case 2:
-                    this->uiSelectByBreedAndAge();
-                    break;
-                case 3:
-                    this->uiGetCurrentPet();
-                    break;
-                case 4:
-                    this->uiGetNextPet();
-                    break;
-                case 5:
-                    this->uiAdoptCurrentPet();
-                    break;
-                case 6:
-                    this->uiSeeAdoptedPets();
-                    break;
-                case 7:
-                    this->seeAdoptedPetsFile(fileType);
-                    break;
-            }
-        }
-        currentOption = getNextOption(isAdministrator);
+    catch (SongException& e)
+    {
+        QMessageBox messageBox;
+        messageBox.critical(0, "Error", QString::fromStdString(e.getErrorsAsString()));
     }
-}
-
-void
-Ui::uiAdoptFromAllPets()
-{
-    controller.controllerAdoptFromAllPets();
-}
-
-void
-Ui::uiSelectByBreedAndAge()
-{
-    string breed;
-    std::cin >> breed;
-    int age;
-    std::cin >> age;
-
-    controller.controllerSelectByBreedAndAge(breed, age);
-}
-
-void
-Ui::uiGetCurrentPet()
-{
-    Dog currentDog = controller.controllerGetCurrentPet();
-
-    displayEntry(currentDog);
-}
-
-void
-Ui::uiGetNextPet()
-{
-    Dog currentDog = controller.controllerGetNextPet();
-
-    displayEntry(currentDog);
-}
-
-void
-Ui::uiAdoptCurrentPet()
-{
-    controller.controllerAdoptCurrentPet();
-}
-
-void
-Ui::uiSeeAdoptedPets()
-{
-    vector<Dog> adoptedPets = controller.controllerGetAdoptedPets();
-
-    for (int i = 0; i < (int)adoptedPets.size(); i++)
-        displayEntry(adoptedPets[i]);
-}
-
-void
-displayEntry(Dog entry)
-{
-    std::cout << "\nDog:";
-    std::cout << "\n\tbreed " << entry.getBreed();
-    std::cout << "\n\tname  " << entry.getName();
-    std::cout << "\n\tage   " << entry.getAge();
-    std::cout << "\n\tphoto " << entry.getPhoto();
-}
-
-void
-Ui::uiGetEntry()
-{
-    printf("Please enter the desired index:\n");
-    int index;
-    scanf("%d", &index);
-
-    Dog foundEntry = controller.controllerGetEntry(index);
-
-    displayEntry(foundEntry);
-}
-
-void
-Ui::uiGetAllEntries()
-{
-    vector<Dog> entries = controller.controllerGetAllEntries();
-
-    for (int i = 0; i < (int)entries.size(); i++)
-        displayEntry(entries[i]);
-}
-
-void
-Ui::uiCreateEntry()
-{
-    string breed, name, photo;
-    int age;
-
-    printf("\tEnter breed:");
-    std::cin >> breed;
-    printf("\tEnter name:");
-    std::cin >> name;
-    printf("\tEnter photo:");
-    std::cin >> photo;
-    printf("\tEnter age:");
-    std::cin >> age;
-
-    bool result = controller.controllerCreateEntry(breed, name, age, photo);
-
-    if (result == false) {
-        std::cout << "Could not create entry";
-    } else   {
-        std::cout << "Entry created!";
+    catch (DuplicateSongException& e)
+    {
+        QMessageBox messageBox;
+        messageBox.critical(0, "Error", e.what());
     }
-}
-
-void
-Ui::uiUpdateEntry()
-{
-    string breed, name, photo;
-    int index, age;
-
-    printf("\tEnter index to update:");
-    std::cin >> index;
-    printf("\tEnter breed:");
-    std::cin >> breed;
-    printf("\tEnter name:");
-    std::cin >> name;
-    printf("\tEnter photo:");
-    std::cin >> photo;
-    printf("\tEnter age:");
-    std::cin >> age;
-
-    bool result = controller.controllerUpdateEntry(index, breed, name, age, photo);
-
-    if (result == false) {
-        std::cout << "Could not update entry";
-    } else   {
-        std::cout << "Entry created!";
-    }
-}
-
-void
-Ui::uiDeleteEntry()
-{
-    int index;
-
-    printf("\tEnter index to delete:");
-    std::cin.clear();
-    std::cin >> index;
-
-    controller.controllerDeleteEntry(index);
-}
-
-void
-Ui::seeAdoptedPetsFile(int fileType)
-{
-    if (fileType)
-        system("xdg-open plop.html");
-    else
-        system("subl plop.csv");
 }

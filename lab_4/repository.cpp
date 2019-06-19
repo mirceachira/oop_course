@@ -11,7 +11,14 @@
 using namespace std;
 
 
-Repository::Repository(){ this->readFromFile(); }
+Repository::Repository()
+{
+    this->readFromFile();
+    CsvHandler csv;
+    this->csvHandler = csv;
+    HtmlHandler html;
+    this->htmlHandler = html;
+}
 
 Repository::Repository(const Repository& otherRepository)
 {
@@ -48,16 +55,16 @@ bool
 validateEntry(string breed, string name, int age, string photo)
 {
     if (breed.length() <= 2)
-        return true;
+        return false;
 
     if (name.length() <= 2)
-        return true;
+        return false;
 
     if (age < 0 || age > 30)
-        return true;
+        return false;
 
     if (photo.find("http") != 0 && photo.find("www") != 0)
-        return true;
+        return false;
 
     return true;
 }
@@ -136,18 +143,6 @@ Repository::repositorySelectByBreedAndAge(string breed, int age)
     user.setStock(newStock);
 }
 
-Dog
-Repository::repositoryGetCurrentPet(){ return user.getCurrent(); };
-
-Dog
-Repository::repositoryGetNextPet(){ return user.getNext(); }
-
-void
-Repository::repositoryAdoptCurrentPet(){ user.adoptCurrent(); }
-
-vector<Dog>
-Repository::repositoryGetAdoptedPets(){ return user.getAdopted(); }
-
 std::istream&
 operator >> (std::istream& str, CsvHandler& data)
 {
@@ -171,17 +166,32 @@ Repository::readFromFile()
     }
 }
 
-void
-Repository::writeToFile()
+Dog
+Repository::repositoryGetCurrentPet()
 {
-    CsvHandler row;
+    return user.getCurrent();
+};
 
-    row.writeToFile(stock);
+Dog
+Repository::repositoryGetNextPet(){ return user.getNext(); }
 
-    bool toHtml = true;
-    if (toHtml)
-    {
-        HtmlHandler html_row;
-        html_row.writeToFile(stock);
+
+void
+Repository::repositoryAdoptCurrentPet()
+{
+    user.adoptCurrent();
+}
+
+vector<Dog>
+Repository::repositoryGetAdoptedPets(){ return user.getAdopted(); }
+
+
+void
+Repository::writeToFile(bool toHtml)
+{
+    this->csvHandler.writeToFile(stock);
+
+    if (toHtml) {
+        this->htmlHandler.writeToFile(stock);
     }
 }

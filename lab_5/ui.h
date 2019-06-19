@@ -1,57 +1,53 @@
 #ifndef UI
 #define UI
 
+#include <QtWidgets/QMainWindow>
+#include <QListWidget>
+#include <QFormLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+
 #include "controller.h"
 
-void
-printMenu(bool isAdministrator);
 
-int
-getNextOption(bool isAdministrator);
+class Ui : public QWidget
+{
+    Q_OBJECT
 
-void
-displayEntry(Dog entry);
+public:
+    Ui(QWidget *parent = 0);
+    ~Ui();
 
-
-class Ui {
 private:
     Controller controller;
-public:
-    // Utilities
-    Ui();
-    Ui(const Ui& otherUi);
-    ~Ui();
-    void
-    uiRunApplication();
+    std::vector<Dog> currentDogsInRepoList;
 
-    // Administrator
-    void
-    uiGetEntry();
-    void
-    uiGetAllEntries();
-    void
-    uiCreateEntry();
-    void
-    uiUpdateEntry();
-    void
-    uiDeleteEntry();
+    //Ui::Seminar6Class ui;
 
-    // User
-    void
-    uiAdoptFromAllPets();
-    void
-    uiSelectByBreedAndAge();
-    void
-    uiGetCurrentPet();
-    void
-    uiGetNextPet();
-    void
-    uiAdoptCurrentPet();
-    void
-    uiSeeAdoptedPets();
+    QListWidget* repoList;
+    QLineEdit* breedEdit;
+    QLineEdit* nameEdit;
+    QLineEdit* photoEdit;
+    QLineEdit* ageEdit;
+    QPushButton* addButton;
+    QPushButton* deleteButton;
+    QPushButton* filterButton;
+    QPushButton* moveOneDogButton;
 
-    void
-    seeAdoptedPetsFile(int fileType);
+    QListWidget* adoptionList;
+
+    void initGUI();
+    void populateRepoList();
+    int getRepoListSelectedIndex();
+
+    void connectSignalsAndSlots();
+
+private slots:
+    // When an item in the list is clicked, the text boxes get filled with the item's information
+    void listItemChanged();
+
+    void addNewDog();
 };
 
 #endif // ifndef UI

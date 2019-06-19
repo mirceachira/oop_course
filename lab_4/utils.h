@@ -12,12 +12,15 @@ class TextFileHandler
 public:
     std::string const&
     operator [] (std::size_t index) const;
+
     std::size_t
     size() const;
+
     void
     readNextRow(std::istream& str);
+
     virtual void
-    writeToFile(std::vector<Dog> dogVector)=0;
+    writeToFile(std::vector<Dog> dogVector) = 0;
 private:
     std::vector<std::string> m_data;
 };

@@ -56,16 +56,19 @@ SOURCES       = ../test2/main.cpp \
 		../test2/utils.cpp \
 		../test2/controller.cpp \
 		../test2/repository.cpp \
-		../test2/tests.cpp moc_mainwindow.cpp
+		../test2/dialog.cpp moc_mainwindow.cpp \
+		moc_dialog.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		domain.o \
 		utils.o \
 		controller.o \
 		repository.o \
-		tests.o \
-		moc_mainwindow.o
-DIST          = ../test2/input.csv \
+		dialog.o \
+		moc_mainwindow.o \
+		moc_dialog.o
+DIST          = ../test2/users.csv \
+		../test2/tasks.csv \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -146,13 +149,13 @@ DIST          = ../test2/input.csv \
 		../test2/utils.h \
 		../test2/controller.h \
 		../test2/repository.h \
-		../test2/tests.h ../test2/main.cpp \
+		../test2/dialog.h ../test2/main.cpp \
 		../test2/mainwindow.cpp \
 		../test2/domain.cpp \
 		../test2/utils.cpp \
 		../test2/controller.cpp \
 		../test2/repository.cpp \
-		../test2/tests.cpp
+		../test2/dialog.cpp
 QMAKE_TARGET  = test2
 DESTDIR       = 
 TARGET        = test2
@@ -161,7 +164,7 @@ TARGET        = test2
 first: all
 ####### Build rules
 
-$(TARGET): ui_mainwindow.h $(OBJECTS)  
+$(TARGET): ui_mainwindow.h ui_dialog.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../test2/test2.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -338,9 +341,9 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../test2/mainwindow.h ../test2/domain.h ../test2/utils.h ../test2/controller.h ../test2/repository.h ../test2/tests.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../test2/main.cpp ../test2/mainwindow.cpp ../test2/domain.cpp ../test2/utils.cpp ../test2/controller.cpp ../test2/repository.cpp ../test2/tests.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../test2/mainwindow.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../test2/mainwindow.h ../test2/domain.h ../test2/utils.h ../test2/controller.h ../test2/repository.h ../test2/dialog.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../test2/main.cpp ../test2/mainwindow.cpp ../test2/domain.cpp ../test2/utils.cpp ../test2/controller.cpp ../test2/repository.cpp ../test2/dialog.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../test2/mainwindow.ui ../test2/dialog.ui ../test2/dialog.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -372,27 +375,41 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_dialog.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_dialog.cpp
 moc_mainwindow.cpp: ../test2/controller.h \
 		../test2/repository.h \
 		../test2/domain.h \
+		../test2/dialog.h \
 		../test2/mainwindow.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/mirceachira/Desktop/oop_course/test2/test2 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../test2/mainwindow.h -o moc_mainwindow.cpp
 
+moc_dialog.cpp: ../test2/dialog.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/mirceachira/Desktop/oop_course/test2/test2 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../test2/dialog.h -o moc_dialog.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mainwindow.h
+compiler_uic_make_all: ui_mainwindow.h ui_dialog.h ui_dialog.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mainwindow.h
+	-$(DEL_FILE) ui_mainwindow.h ui_dialog.h ui_dialog.h
 ui_mainwindow.h: ../test2/mainwindow.ui \
 		/usr/lib/qt5/bin/uic
 	/usr/lib/qt5/bin/uic ../test2/mainwindow.ui -o ui_mainwindow.h
+
+ui_dialog.h: ../test2/dialog.ui \
+		/usr/lib/qt5/bin/uic
+	/usr/lib/qt5/bin/uic ../test2/dialog.ui -o ui_dialog.h
+
+ui_dialog.h: ../test2/dialog.ui \
+		/usr/lib/qt5/bin/uic
+	/usr/lib/qt5/bin/uic ../test2/dialog.ui -o ui_dialog.h
 
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
@@ -407,15 +424,16 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 main.o: ../test2/main.cpp ../test2/mainwindow.h \
 		../test2/controller.h \
 		../test2/repository.h \
-		../test2/domain.h
+		../test2/domain.h \
+		../test2/dialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../test2/main.cpp
 
 mainwindow.o: ../test2/mainwindow.cpp ../test2/mainwindow.h \
 		../test2/controller.h \
 		../test2/repository.h \
 		../test2/domain.h \
-		ui_mainwindow.h \
-		../test2/tests.h
+		../test2/dialog.h \
+		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../test2/mainwindow.cpp
 
 domain.o: ../test2/domain.cpp ../test2/domain.h
@@ -435,14 +453,15 @@ repository.o: ../test2/repository.cpp ../test2/repository.h \
 		../test2/utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o repository.o ../test2/repository.cpp
 
-tests.o: ../test2/tests.cpp ../test2/controller.h \
-		../test2/repository.h \
-		../test2/domain.h \
-		../test2/tests.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tests.o ../test2/tests.cpp
+dialog.o: ../test2/dialog.cpp ../test2/dialog.h \
+		ui_dialog.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialog.o ../test2/dialog.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_dialog.o: moc_dialog.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dialog.o moc_dialog.cpp
 
 ####### Install
 

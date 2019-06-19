@@ -6,58 +6,32 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>416</width>
-    <height>325</height>
+    <width>360</width>
+    <height>437</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="theButton">
+   <widget class="QListView" name="programmerList">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>10</y>
-      <width>111</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>delete</string>
-    </property>
-   </widget>
-   <widget class="QListWidget" name="theList">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
+      <x>20</x>
       <y>10</y>
       <width>256</width>
       <height>192</height>
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="filterInput">
+   <widget class="QListView" name="listView_2">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>30</x>
       <y>210</y>
-      <width>261</width>
-      <height>41</height>
+      <width>256</width>
+      <height>192</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="filter">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>210</y>
-      <width>111</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>filter</string>
     </property>
    </widget>
   </widget>
@@ -66,7 +40,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>416</width>
+     <width>360</width>
      <height>22</height>
     </rect>
    </property>

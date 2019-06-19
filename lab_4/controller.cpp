@@ -9,11 +9,20 @@ using namespace std;
 Controller::Controller()
 {
     Repository repository;
-
     this->repository = repository;
 }
 
-Controller::Controller(const Controller& otherController){ this->repository = otherController.repository; }
+Controller::Controller(TextFileHandler* handler)
+{
+    this->handler = handler;
+    Repository repository;
+    this->repository = repository;
+}
+
+Controller::Controller(const Controller& otherController){
+    this->repository = otherController.repository;
+    this->handler = otherController.handler;
+}
 
 Controller::~Controller(){ }
 
@@ -34,7 +43,7 @@ Controller::controllerCreateEntry(string breed, string name, int age, string pho
 {
     bool result = repository.repositoryCreateEntry(breed, name, age, photo);
     if (result)
-        repository.writeToFile();
+        this->handler->writeToFile(repository.repositoryGetAdoptedPets());
 
     return result;
 }
@@ -44,7 +53,7 @@ Controller::controllerUpdateEntry(int index, string breed, string name, int age,
 {
     bool result = repository.repositoryUpdateEntry(index, breed, name, age, photo);
     if (result)
-        repository.writeToFile();
+        this->handler->writeToFile(repository.repositoryGetAdoptedPets());
 
     return result;
 }
@@ -83,6 +92,7 @@ void
 Controller::controllerAdoptCurrentPet()
 {
     repository.repositoryAdoptCurrentPet();
+    this->handler->writeToFile(repository.repositoryGetAdoptedPets());
 }
 
 vector<Dog>

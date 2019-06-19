@@ -54,7 +54,8 @@ getNextOption(bool isAdministrator)
 
 Ui::Ui()
 {
-    Controller controller;
+    HtmlHandler html;
+    Controller controller{ &html };
 
     this->controller = controller;
 }
@@ -68,18 +69,28 @@ Ui::uiRunApplication()
 {
     bool isAdministrator, fileType;
 
-    populateApplication(controller);
-
-    runTests(controller);
+    // runTests(controller);
 
     printf("Available mods:\n\t1 - administrator\n\t0 - user\nEnter your mode: ");
     std::cin >> isAdministrator;
 
-    if (isAdministrator == 0)
-    {
+    if (isAdministrator == 0) {
         cout << "Please select file type to use for display:\n\t0 - csv\n\t1 - html\nWhich one boss? ";
         cin >> fileType;
     }
+    if (fileType) {
+        TextFileHandler* handler = new HtmlHandler();
+
+        Controller the_controller{ handler };
+        this->controller = the_controller;
+    } else  {
+        TextFileHandler* handler = new CsvHandler();
+
+        Controller the_controller{ handler };
+        this->controller = the_controller;
+    }
+
+    populateApplication(this->controller);
 
     int currentOption = getNextOption(isAdministrator);
     while (currentOption != 0) {
@@ -128,7 +139,7 @@ Ui::uiRunApplication()
         }
         currentOption = getNextOption(isAdministrator);
     }
-}
+} // Ui::uiRunApplication
 
 void
 Ui::uiAdoptFromAllPets()
@@ -174,7 +185,7 @@ Ui::uiSeeAdoptedPets()
 {
     vector<Dog> adoptedPets = controller.controllerGetAdoptedPets();
 
-    for (int i = 0; i < (int)adoptedPets.size(); i++)
+    for (int i = 0; i < (int) adoptedPets.size(); i++)
         displayEntry(adoptedPets[i]);
 }
 
@@ -205,7 +216,7 @@ Ui::uiGetAllEntries()
 {
     vector<Dog> entries = controller.controllerGetAllEntries();
 
-    for (int i = 0; i < (int)entries.size(); i++)
+    for (int i = 0; i < (int) entries.size(); i++)
         displayEntry(entries[i]);
 }
 
@@ -228,7 +239,7 @@ Ui::uiCreateEntry()
 
     if (result == false) {
         std::cout << "Could not create entry";
-    } else   {
+    } else {
         std::cout << "Entry created!";
     }
 }
@@ -254,7 +265,7 @@ Ui::uiUpdateEntry()
 
     if (result == false) {
         std::cout << "Could not update entry";
-    } else   {
+    } else {
         std::cout << "Entry created!";
     }
 }
@@ -275,7 +286,7 @@ void
 Ui::seeAdoptedPetsFile(int fileType)
 {
     if (fileType)
-        system("xdg-open plop.html");
+        system("xdg-open result.html");
     else
-        system("subl plop.csv");
+        system("subl result.csv");
 }

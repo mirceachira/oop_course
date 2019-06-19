@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2019-06-07T07:57:43
+# Project created by QtCreator 2019-06-13T14:23:24
 #
 #-------------------------------------------------
 
@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = test2
+TARGET = test
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -24,24 +24,27 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-    domain.cpp \
-    utils.cpp \
     controller.cpp \
+    dialog.cpp \
+    domain.cpp \
+    main.cpp \
     repository.cpp \
-    tests.cpp
+    utils.cpp
 
 HEADERS += \
-        mainwindow.h \
-    domain.h \
-    utils.h \
     controller.h \
+    dialog.h \
+    domain.h \
     repository.h \
-    tests.h
+    utils.h
 
 FORMS += \
-        mainwindow.ui
+    dialog.ui
+
+SUBDIRS += \
+    test.pro
 
 DISTFILES += \
-    input.csv
+    test.pro.user \
+    tasks.csv \
+    users.csv

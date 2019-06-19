@@ -46,7 +46,7 @@ CsvHandler::writeToFile(std::vector<Dog> dogVector)
 {
     ofstream myfile;
 
-    myfile.open("plop.csv", std::ios_base::out);
+    myfile.open("result.csv", std::ios_base::out);
 
     for (auto d: dogVector) {
         myfile << d.getBreed() << ',' << d.getName() << ',' << d.getAge() << ',' << d.getPhoto() << '\n';
@@ -62,7 +62,7 @@ HtmlHandler::writeToFile(std::vector<Dog> dogVector)
     string htmlEnd = "</table></body></html>";
     ofstream myfile;
 
-    myfile.open("plop.html", std::ios_base::out);
+    myfile.open("result.html", std::ios_base::out);
 
     myfile << htmlStart;
 

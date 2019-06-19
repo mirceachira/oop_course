@@ -23,7 +23,6 @@ armadillo sarpe,Goldy 9,6,https://google.com
 void
 populateApplication(Controller& currentController)
 {
-
     currentController.controllerAdoptFromAllPets();
 } // populateApplication
 

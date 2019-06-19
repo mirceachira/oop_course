@@ -1,0 +1,12 @@
+task A1,open,10
+task A2,open,10
+task A21,open,10
+task A22,open,10
+task A23,open,10
+task A3,closed,10
+task B1,open,20
+task B2,open,20
+task C1,closed,30
+task C2,closed,30
+task C3,closed,30
+task C4,closed,30
